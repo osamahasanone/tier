@@ -1,9 +1,7 @@
-from urlshortener.models import url
 from rest_framework import generics, status
-from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import URL, Visit
-from .serializers import URLSerializerResponse
+from .models import URL
+from .serializers import URLSerializerResponse, URLSerializerShortenResponse, URLSerializerRequest
 
 
 class URLList(generics.ListAPIView):
@@ -16,11 +14,12 @@ class URLDetail(generics.RetrieveAPIView):
     serializer_class = URLSerializerResponse
 
 
-class URLShortener(APIView):
+class URLShortener(generics.CreateAPIView):
+    serializer_class = URLSerializerRequest
+
     def post(self, request, format=None):
-        long_url = request.data.get('long_url')
+        long_url = request.data.get('long_text')
         if not long_url:
             return Response('Bad Request', status=status.HTTP_400_BAD_REQUEST)
         url = URL.objects.shorten(long_url)
-        return Response({'short_url': url.short_text})
-        # return Response(URLSerializerResponse(url).data)
+        return Response(URLSerializerShortenResponse(url).data)

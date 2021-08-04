@@ -1,6 +1,6 @@
+import secrets
 from django.db import models
 from django.db.utils import IntegrityError
-import secrets
 from . import Visit
 from ..constants import HASH_NBYTES
 from ..constants import BASE_URL
