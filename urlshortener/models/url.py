@@ -17,7 +17,7 @@ class URLQuerySet(models.QuerySet):
 
 
 class URL(models.Model):
-    long_text = models.CharField(max_length=1000, unique=True)
+    long_text = models.URLField(max_length=1000, unique=True)
     hash = models.CharField(max_length=8, unique=True)
 
     objects = URLQuerySet.as_manager()
@@ -29,7 +29,7 @@ class URL(models.Model):
     def short_text(self):
         return f'{BASE_URL}{self.hash}'
 
-    def set_hash(self):
+    def _set_hash(self):
         hash = secrets.token_urlsafe(HASH_NBYTES)
         if not URL.objects.filter(hash=hash).exists():
             self.hash = hash
@@ -41,5 +41,5 @@ class URL(models.Model):
         visit.save()
 
     def save(self, *args, **kwargs):
-        self.set_hash()
+        self._set_hash()
         super(URL, self).save(*args, **kwargs)
