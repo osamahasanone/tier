@@ -10,3 +10,11 @@ class URLSerializerResponse(serializers.ModelSerializer):
         model = URL
         fields = ('id', 'long_text', 'hash', 'visits')
         depth = 1
+
+
+class URLSerializerShortenResponse(serializers.ModelSerializer):
+    visits = VisitSerializerResponse(many=True, read_only=True)
+
+    class Meta:
+        model = URL
+        fields = ('short_text')
