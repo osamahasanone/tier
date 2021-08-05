@@ -12,13 +12,7 @@ class URLSerializerResponse(serializers.ModelSerializer):
         depth = 1
 
 
-class URLSerializerShortenResponse(serializers.ModelSerializer):
+class URLShortenSerializer(serializers.ModelSerializer):
     class Meta:
         model = URL
-        fields = ('short_text',)
-
-
-class URLSerializerRequest(serializers.ModelSerializer):
-    class Meta:
-        model = URL
-        fields = ('long_text',)
+        fields = ('long_text', 'short_text',)

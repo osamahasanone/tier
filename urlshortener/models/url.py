@@ -7,7 +7,7 @@ from ..constants import BASE_URL
 
 
 class URL(models.Model):
-    long_text = models.URLField(max_length=1000, unique=True)
+    long_text = models.URLField(max_length=1000)
     hash = models.CharField(max_length=8, unique=True)
 
     def __str__(self):
