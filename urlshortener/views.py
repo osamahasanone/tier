@@ -25,5 +25,10 @@ class URLShortener(generics.GenericAPIView):
             long_text=serializer.validated_data['long_text']).first()
         if not url:
             url = serializer.save()
-        url.visit()
-        return Response(URLShortenSerializer(url).data)
+            url.visit()
+            response = Response(URLShortenSerializer(
+                url).data, status=status.HTTP_201_CREATED)
+        else:
+            url.visit()
+            response = Response(URLShortenSerializer(url).data)
+        return response

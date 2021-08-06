@@ -17,6 +17,10 @@ class URL(models.Model):
     def short_text(self):
         return f'{BASE_URL}{self.hash}'
 
+    @property
+    def visits_count(self):
+        return self.visits.count()
+
     def _set_hash(self):
         hash = secrets.token_urlsafe(HASH_NBYTES)
         if not URL.objects.filter(hash=hash).exists():
