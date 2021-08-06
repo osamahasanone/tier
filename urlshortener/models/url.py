@@ -2,6 +2,7 @@ import secrets
 from django.db import models
 from . import Visit
 from ..constants import BASE_URL, HASH_NBYTES
+from django.db.models.signals import post_save
 
 
 class URL(models.Model):
@@ -19,17 +20,22 @@ class URL(models.Model):
     def visits_count(self):
         return self.visits.count()
 
-    def _set_hash(self):
+    def set_hash(self):
         hash = secrets.token_urlsafe(HASH_NBYTES)
         if not URL.objects.filter(hash=hash).exists():
             self.hash = hash
             return
-        self._set_hash()
+        self.set_hash()
 
     def visit(self):
         visit = Visit(url=self)
         visit.save()
 
-    def save(self, *args, **kwargs):
-        self._set_hash()
-        super(URL, self).save(*args, **kwargs)
+
+def post_save_url(sender, instance, created, ** kwargs):
+    if created:
+        instance.set_hash()
+        instance.save()
+
+
+post_save.connect(post_save_url, URL)
