@@ -1,2 +1,2 @@
-from .visit import VisitSerializerResponse
-from .url import URLSerializerResponse, URLShortenSerializer
+from .visit import VisitSerializer
+from .url import URLSerializer, URLShortenSerializer

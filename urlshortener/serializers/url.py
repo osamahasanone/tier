@@ -1,10 +1,10 @@
 from rest_framework import serializers
 from ..models import URL
-from . import VisitSerializerResponse
+from . import VisitSerializer
 
 
-class URLSerializerResponse(serializers.ModelSerializer):
-    visits = VisitSerializerResponse(many=True, read_only=True)
+class URLSerializer(serializers.ModelSerializer):
+    visits = VisitSerializer(many=True, read_only=True)
 
     class Meta:
         model = URL

@@ -1,17 +1,17 @@
 from rest_framework import generics, status
 from rest_framework.response import Response
 from .models import URL
-from .serializers import URLSerializerResponse, URLShortenSerializer
+from .serializers import URLSerializer, URLShortenSerializer
 
 
 class URLList(generics.ListAPIView):
     queryset = URL.objects.all()
-    serializer_class = URLSerializerResponse
+    serializer_class = URLSerializer
 
 
 class URLDetail(generics.RetrieveAPIView):
     queryset = URL.objects.all()
-    serializer_class = URLSerializerResponse
+    serializer_class = URLSerializer
 
 
 class URLShortener(generics.GenericAPIView):

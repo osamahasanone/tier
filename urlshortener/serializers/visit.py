@@ -2,7 +2,7 @@ from rest_framework import serializers
 from ..models import Visit
 
 
-class VisitSerializerResponse(serializers.ModelSerializer):
+class VisitSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Visit
