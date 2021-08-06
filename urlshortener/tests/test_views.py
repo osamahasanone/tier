@@ -1,7 +1,6 @@
 import pytest
 from rest_framework.test import APIClient
 from rest_framework.reverse import reverse
-from django.test import TestCase
 
 
 @pytest.fixture(scope='module')
@@ -28,7 +27,7 @@ def valid_shorten_jsons():
 
 
 @pytest.mark.django_db
-@pytest.mark.parametrize('bad_json',
+@pytest.mark.parametrize('invalid_shorten_json',
                          [
                              {'long_text': 'normal_text'},
                              {'long_text': ''},
@@ -36,8 +35,8 @@ def valid_shorten_jsons():
                              {'': 'http://test.com/test/test'}
                          ]
                          )
-def test_shorten_invalid_json(api_client, shorten_endpoint, bad_json):
-    response = api_client.post(shorten_endpoint, bad_json)
+def test_shorten_invalid_json(api_client, shorten_endpoint, invalid_shorten_json):
+    response = api_client.post(shorten_endpoint, invalid_shorten_json)
     assert response.status_code == 400
 
 

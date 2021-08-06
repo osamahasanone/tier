@@ -1,6 +1,5 @@
 import secrets
 from django.db import models
-from django.db.utils import IntegrityError
 from . import Visit
 from ..constants import HASH_NBYTES
 from ..constants import BASE_URL
@@ -26,7 +25,7 @@ class URL(models.Model):
         if not URL.objects.filter(hash=hash).exists():
             self.hash = hash
             return
-        self.generate_hash()
+        self._set_hash()
 
     def visit(self):
         visit = Visit(url=self)
