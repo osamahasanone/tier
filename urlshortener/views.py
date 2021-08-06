@@ -1,5 +1,6 @@
 from rest_framework import generics, status
 from rest_framework.response import Response
+from django.db import transaction
 from .models import URL
 from .serializers import URLSerializer, URLShortenSerializer
 
@@ -26,6 +27,7 @@ class URLShortener(generics.GenericAPIView):
     '''
     serializer_class = URLShortenSerializer
 
+    @transaction.atomic()
     def post(self, request, format=None):
         serializer = URLShortenSerializer(data=request.data)
         if not serializer.is_valid():
