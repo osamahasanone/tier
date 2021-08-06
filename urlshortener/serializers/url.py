@@ -15,4 +15,4 @@ class URLSerializer(serializers.ModelSerializer):
 class URLShortenSerializer(serializers.ModelSerializer):
     class Meta:
         model = URL
-        fields = ('long_text', 'short_text', 'visits_count')
+        fields = ('id', 'long_text', 'short_text', 'visits_count')
