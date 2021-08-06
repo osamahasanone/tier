@@ -14,13 +14,16 @@ class URL(models.Model):
 
     @property
     def short_text(self):
+        '''generated short url'''
         return f'{BASE_URL}{self.hash}'
 
     @property
     def visits_count(self):
+        '''received SHORTEN requests count'''
         return self.visits.count()
 
     def set_hash(self):
+        '''generate a unique Base64 hash'''
         hash = secrets.token_urlsafe(HASH_NBYTES)
         if not URL.objects.filter(hash=hash).exists():
             self.hash = hash
@@ -28,11 +31,13 @@ class URL(models.Model):
         self.set_hash()
 
     def visit(self):
+        '''add a visit'''
         visit = Visit(url=self)
         visit.save()
 
 
 def post_save_url(sender, instance, created, ** kwargs):
+    '''generate a hash right after CREATING a url'''
     if created:
         instance.set_hash()
         instance.save()

@@ -11,6 +11,7 @@ def valid_url_object():
 
 @pytest.mark.django_db
 def test_save_url(valid_url_object):
+    '''test if a url has correct data after it is created'''
     valid_url_object.save()
     assert valid_url_object.hash is not None
     assert len(valid_url_object.hash)//1.3 == HASH_NBYTES
@@ -21,6 +22,7 @@ def test_save_url(valid_url_object):
 
 @pytest.mark.django_db
 def test_visit_url(valid_url_object):
+    '''test visiting a url'''
     valid_url_object.save()
     valid_url_object.visit()
     assert valid_url_object.visits_count == 1

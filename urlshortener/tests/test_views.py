@@ -36,12 +36,14 @@ def valid_shorten_jsons():
                          ]
                          )
 def test_shorten_invalid_json(api_client, shorten_endpoint, invalid_shorten_json):
+    '''test getting bad request response for invalid request json'''
     response = api_client.post(shorten_endpoint, invalid_shorten_json)
     assert response.status_code == 400
 
 
 @pytest.mark.django_db
 def test_shorten_once(api_client, shorten_endpoint, valid_shorten_jsons):
+    '''test shorten a url first request'''
     response = api_client.post(shorten_endpoint, valid_shorten_jsons[0])
     assert response.status_code == 201
     keys = ('short_text', 'visits_count')
@@ -52,6 +54,7 @@ def test_shorten_once(api_client, shorten_endpoint, valid_shorten_jsons):
 
 @pytest.mark.django_db
 def test_shorten_twice(api_client, shorten_endpoint, valid_shorten_jsons):
+    '''test shorten a url again requests'''
     first_response = api_client.post(shorten_endpoint, valid_shorten_jsons[0])
     second_response = api_client.post(shorten_endpoint, valid_shorten_jsons[0])
     assert second_response.status_code == 200
@@ -63,6 +66,7 @@ def test_shorten_twice(api_client, shorten_endpoint, valid_shorten_jsons):
 
 @pytest.mark.django_db
 def test_urls_list(api_client, shorten_endpoint, urls_list_endpoint, valid_shorten_jsons):
+    '''test listing urls'''
     for valid_json in valid_shorten_jsons:
         api_client.post(shorten_endpoint, valid_json)
     response = api_client.get(urls_list_endpoint)
@@ -73,6 +77,7 @@ def test_urls_list(api_client, shorten_endpoint, urls_list_endpoint, valid_short
 @pytest.mark.django_db
 @pytest.mark.parametrize('url_id,response_code', [(1, 200), (2, 404)])
 def test_urls_retrieve(api_client, shorten_endpoint, valid_shorten_jsons, url_id, response_code):
+    '''test retrieving a url (found and not found)'''
     api_client.post(shorten_endpoint, valid_shorten_jsons[0])
     url_retrieve_endpoint = reverse('url_retrieve', kwargs={'pk': url_id})
     response = api_client.get(url_retrieve_endpoint)
