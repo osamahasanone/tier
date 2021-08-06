@@ -1,8 +1,7 @@
 import secrets
 from django.db import models
 from . import Visit
-from ..constants import HASH_NBYTES
-from ..constants import BASE_URL
+from ..constants import BASE_URL, HASH_NBYTES
 
 
 class URL(models.Model):
