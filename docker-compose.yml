@@ -15,7 +15,7 @@ services:
     volumes:
       - .:/code
     command: >
-      sh -c "./wait-for-it.sh db:3306  && python manage.py runserver 0.0.0.0:8000"
+      sh -c "./wait-for-it.sh db:3306 -t 1000 && python manage.py runserver 0.0.0.0:8000"
     ports:
       - "8000:8000"
     depends_on:
@@ -24,9 +24,9 @@ services:
     image: tier_api
     volumes:
       - .:/code
-    command: sh -c "./wait-for-it.sh api:8000 && python manage.py migrate"
+    command: sh -c "./wait-for-it.sh api:8000 -t 1000 && python manage.py migrate"
   api-test:
     image: tier_api
     volumes:
       - .:/code
-    command: sh -c "./wait-for-it.sh api:8000 && pytest"
+    command: sh -c "./wait-for-it.sh api:8000 -t 1000 && pytest"
