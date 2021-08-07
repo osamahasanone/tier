@@ -75,10 +75,15 @@ def test_urls_list(api_client, shorten_endpoint, urls_list_endpoint, valid_short
 
 
 @pytest.mark.django_db
-@pytest.mark.parametrize('url_id,response_code', [(1, 200), (2, 404)])
-def test_urls_retrieve(api_client, shorten_endpoint, valid_shorten_jsons, url_id, response_code):
+def test_urls_retrieve(api_client, shorten_endpoint, valid_shorten_jsons):
     '''test retrieving a url (found and not found)'''
-    api_client.post(shorten_endpoint, valid_shorten_jsons[0])
-    url_retrieve_endpoint = reverse('url_retrieve', kwargs={'pk': url_id})
+    post_response = api_client.post(shorten_endpoint, valid_shorten_jsons[0])
+    url_id = post_response.json().get('id')
+    url_retrieve_endpoint = reverse(
+        'url_retrieve', kwargs={'pk': url_id})
     response = api_client.get(url_retrieve_endpoint)
-    assert response.status_code == response_code
+    assert response.status_code == 200
+    url_retrieve_endpoint = reverse(
+        'url_retrieve', kwargs={'pk': url_id+1})
+    response = api_client.get(url_retrieve_endpoint)
+    assert response.status_code == 404
