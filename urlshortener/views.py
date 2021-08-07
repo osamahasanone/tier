@@ -1,6 +1,7 @@
 from rest_framework import generics, status
 from rest_framework.response import Response
 from django.db import transaction
+from drf_yasg.utils import swagger_auto_schema
 from .models import URL
 from .serializers import URLSerializer, URLShortenSerializer
 
@@ -27,6 +28,13 @@ class URLShortener(generics.GenericAPIView):
     '''
     serializer_class = URLShortenSerializer
 
+    @swagger_auto_schema(operation_description="Pass a long URL, get a short one and its visits count",
+                         responses={
+                             200: 'The long URL is already in the database, short URL has been just returned',
+                             201: 'Long URL is not found in the database, it has been created, shortened and returned',
+                             400: 'No valid URL in the request'
+                         }
+                         )
     @transaction.atomic()
     def post(self, request, format=None):
         serializer = URLShortenSerializer(data=request.data)
